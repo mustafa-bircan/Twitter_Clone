@@ -51,7 +51,7 @@ public class User {
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
     private Set<Notification> notifications;
 
-    @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Media> media;
 
 
