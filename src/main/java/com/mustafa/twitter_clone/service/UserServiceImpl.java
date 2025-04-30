@@ -20,6 +20,14 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    private UserResponseDto convertToDto(User user) {
+        UserResponseDto dto = new UserResponseDto();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        return dto;
+    }
+
     @Override
     public UserResponseDto createUser(UserResponseDto dto) {
         User user = new User();
@@ -30,33 +38,21 @@ public class UserServiceImpl implements UserService {
 
         User saved = userRepository.save(user);
 
-        UserResponseDto response = new UserResponseDto();
-        response.setId(saved.getId());
-        response.setUsername(saved.getUsername());
-        response.setEmail(saved.getEmail());
-        return response;
+        return convertToDto(saved);
     }
 
     @Override
     public List<UserResponseDto> getAllUsers() {
-        return userRepository.findAll().stream().map(user -> {
-            UserResponseDto dto = new UserResponseDto();
-            dto.setId(user.getId());
-            dto.setUsername(user.getUsername());
-            dto.setEmail(user.getEmail());
-            return dto;
-        }).collect(Collectors.toList());
+        return userRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public UserResponseDto getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-        UserResponseDto dto = new UserResponseDto();
-        dto.setId(user.getId());
-        dto.setUsername(user.getUsername());
-        dto.setEmail(user.getEmail());
-        return dto;
+        return convertToDto(user);
     }
 
     @Override

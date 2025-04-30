@@ -27,6 +27,17 @@ public class TweetServiceImpl implements TweetService{
         this.userRepository = userRepository;
     }
 
+    private TweetResponseDto convertToDto(Tweet tweet) {
+        TweetResponseDto dto = new TweetResponseDto();
+        dto.setId(tweet.getId());
+        dto.setContent(tweet.getContent());
+        dto.setCreatedAt(tweet.getCreatedAt());
+        dto.setUpdatedAt(tweet.getUpdatedAt());
+        dto.setUserId(tweet.getUser().getId());
+        dto.setUsername(tweet.getUser().getUsername());
+        return dto;
+    }
+
     @Override
     public TweetResponseDto createTweet(TweetRequestDto tweetRequestDto) {
         User user = userRepository.findById(tweetRequestDto.getUserId())
@@ -40,44 +51,20 @@ public class TweetServiceImpl implements TweetService{
 
         Tweet savedTweet = tweetRepository.save(tweet);
 
-        TweetResponseDto responseDto = new TweetResponseDto();
-        responseDto.setId(savedTweet.getId());
-        responseDto.setContent(savedTweet.getContent());
-        responseDto.setCreatedAt(savedTweet.getCreatedAt());
-        responseDto.setUpdatedAt(savedTweet.getUpdatedAt());
-        responseDto.setUserId(savedTweet.getUser().getId());
-        responseDto.setUsername(savedTweet.getUser().getUsername());
-
-        return responseDto;
+        return convertToDto(savedTweet);
     }
 
     @Override
     public TweetResponseDto getTweetById(Long id) {
         Tweet tweet = tweetRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tweet not found"));
-        TweetResponseDto dto = new TweetResponseDto();
-        dto.setId(tweet.getId());
-        dto.setContent(tweet.getContent());
-        dto.setCreatedAt(tweet.getCreatedAt());
-        dto.setUpdatedAt(tweet.getUpdatedAt());
-        dto.setUserId(tweet.getUser().getId());
-        dto.setUsername(tweet.getUser().getUsername());
-        return dto;
+        return convertToDto(tweet);
     }
 
     @Override
     public List<TweetResponseDto> getAllTweets() {
         return tweetRepository.findAll().stream()
-                .map(tweet -> {
-                    TweetResponseDto dto = new TweetResponseDto();
-                    dto.setId(tweet.getId());
-                    dto.setContent(tweet.getContent());
-                    dto.setCreatedAt(tweet.getCreatedAt());
-                    dto.setUpdatedAt(tweet.getUpdatedAt());
-                    dto.setUserId(tweet.getUser().getId());
-                    dto.setUsername(tweet.getUser().getUsername());
-                    return dto;
-                })
+                .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
@@ -90,48 +77,20 @@ public class TweetServiceImpl implements TweetService{
 
         Tweet updatedTweet = tweetRepository.save(tweet);
 
-        TweetResponseDto dto = new TweetResponseDto();
-        dto.setId(updatedTweet.getId());
-        dto.setContent(updatedTweet.getContent());
-        dto.setCreatedAt(updatedTweet.getCreatedAt());
-        dto.setUpdatedAt(updatedTweet.getUpdatedAt());
-        dto.setUserId(updatedTweet.getUser().getId());
-        dto.setUsername(updatedTweet.getUser().getUsername());
-
-        return dto;
+        return convertToDto(updatedTweet);
     }
 
     @Override
     public List<TweetResponseDto> getTweetsByUsername(String username) {
         List<Tweet> tweets = tweetRepository.findByUserUsername(username);
-        return tweets.stream().map(tweet -> {
-            TweetResponseDto dto = new TweetResponseDto();
-            dto.setId(tweet.getId());
-            dto.setContent(tweet.getContent());
-            dto.setCreatedAt(tweet.getCreatedAt());
-            dto.setUpdatedAt(tweet.getUpdatedAt());
-            dto.setUserId(tweet.getUser().getId());
-            dto.setUsername(tweet.getUser().getUsername());
-            return dto;
-        }).collect(Collectors.toList());
+        return tweets.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Override
     public List<TweetResponseDto> getTweetsByUserId(Long userId) {
         List<Tweet> tweets = tweetRepository.findByUserId(userId);
-        return tweets.stream().map(tweet -> {
-            TweetResponseDto dto = new TweetResponseDto();
-            dto.setId(tweet.getId());
-            dto.setContent(tweet.getContent());
-            dto.setCreatedAt(tweet.getCreatedAt());
-            dto.setUpdatedAt(tweet.getUpdatedAt());
-            dto.setUserId(tweet.getUser().getId());
-            dto.setUsername(tweet.getUser().getUsername());
-            return dto;
-        }).collect(Collectors.toList());
+        return tweets.stream().map(this::convertToDto).collect(Collectors.toList());
     }
-
-
 
     @Override
     public void deleteTweet(Long id) {
