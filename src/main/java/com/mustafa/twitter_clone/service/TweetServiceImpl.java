@@ -116,6 +116,22 @@ public class TweetServiceImpl implements TweetService{
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public List<TweetResponseDto> getTweetsByUserId(Long userId) {
+        List<Tweet> tweets = tweetRepository.findByUserId(userId);
+        return tweets.stream().map(tweet -> {
+            TweetResponseDto dto = new TweetResponseDto();
+            dto.setId(tweet.getId());
+            dto.setContent(tweet.getContent());
+            dto.setCreatedAt(tweet.getCreatedAt());
+            dto.setUpdatedAt(tweet.getUpdatedAt());
+            dto.setUserId(tweet.getUser().getId());
+            dto.setUsername(tweet.getUser().getUsername());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+
 
     @Override
     public void deleteTweet(Long id) {

@@ -11,5 +11,6 @@ public interface TweetService {
     List<TweetResponseDto> getAllTweets();
     TweetResponseDto updateTweet(Long id, TweetRequestDto tweetRequestDto);
     List<TweetResponseDto> getTweetsByUsername(String username);
+    List<TweetResponseDto> getTweetsByUserId(Long userId);
     void deleteTweet(Long id);
 }
