@@ -25,6 +25,11 @@ public class TweetController {
         return tweetService.getTweetById(id);
     }
 
+    @GetMapping("/findByUsername")
+    public List<TweetResponseDto> getTweetsByUsername(@RequestParam String username) {
+        return tweetService.getTweetsByUsername(username);
+    }
+
     @GetMapping
     public List<TweetResponseDto> getAllTweets() {
         return tweetService.getAllTweets();
