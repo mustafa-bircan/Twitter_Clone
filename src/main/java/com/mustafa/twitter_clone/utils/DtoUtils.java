@@ -1,13 +1,7 @@
 package com.mustafa.twitter_clone.utils;
 
-import com.mustafa.twitter_clone.dto.CommentResponseDto;
-import com.mustafa.twitter_clone.dto.LikeResponseDto;
-import com.mustafa.twitter_clone.dto.MediaResponseDto;
-import com.mustafa.twitter_clone.dto.UserResponseDto;
-import com.mustafa.twitter_clone.entity.Comment;
-import com.mustafa.twitter_clone.entity.Like;
-import com.mustafa.twitter_clone.entity.Media;
-import com.mustafa.twitter_clone.entity.User;
+import com.mustafa.twitter_clone.dto.*;
+import com.mustafa.twitter_clone.entity.*;
 
 public class DtoUtils {
     public static UserResponseDto convertUserToDto(User user) {
@@ -47,6 +41,21 @@ public class DtoUtils {
         dto.setUsername(like.getUser().getUsername());
         dto.setTweetId(like.getTweet().getId());
         dto.setCreatedAt(like.getCreatedAt());
+        return dto;
+    }
+
+    public static NotificationResponseDto convertNotificationToDto(Notification notification) {
+        NotificationResponseDto dto = new NotificationResponseDto();
+        dto.setId(notification.getId());
+        dto.setReceiverId(notification.getReceiver().getId());
+        dto.setReceiverUsername(notification.getReceiver().getUsername());
+        dto.setSenderId(notification.getSender().getId());
+        dto.setSenderUsername(notification.getSender().getUsername());
+        dto.setType(notification.getType());
+        dto.setTweetId(notification.getTweet() != null ? notification.getTweet().getId() : null);
+        dto.setContent(notification.getContent());
+        dto.setRead(notification.isRead());
+        dto.setCreatedAt(notification.getCreatedAt());
         return dto;
     }
 }

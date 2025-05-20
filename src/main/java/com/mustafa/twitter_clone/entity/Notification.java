@@ -18,15 +18,29 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private User receiver;
+
+    @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false)
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "tweet_id")
+    private Tweet tweet;
+
     @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private String type;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User receiver;
+    @Column(nullable = false)
+    private boolean isRead = false;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
