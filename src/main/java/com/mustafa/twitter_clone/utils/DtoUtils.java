@@ -1,9 +1,11 @@
 package com.mustafa.twitter_clone.utils;
 
 import com.mustafa.twitter_clone.dto.CommentResponseDto;
+import com.mustafa.twitter_clone.dto.LikeResponseDto;
 import com.mustafa.twitter_clone.dto.MediaResponseDto;
 import com.mustafa.twitter_clone.dto.UserResponseDto;
 import com.mustafa.twitter_clone.entity.Comment;
+import com.mustafa.twitter_clone.entity.Like;
 import com.mustafa.twitter_clone.entity.Media;
 import com.mustafa.twitter_clone.entity.User;
 
@@ -35,6 +37,16 @@ public class DtoUtils {
         dto.setTweetId(comment.getTweet().getId());
         dto.setContent(comment.getContent());
         dto.setCreatedAt(comment.getCreatedAt());
+        return dto;
+    }
+
+    public static LikeResponseDto convertLikeToDto(Like like) {
+        LikeResponseDto dto = new LikeResponseDto();
+        dto.setId(like.getId());
+        dto.setUserId(like.getUser().getId());
+        dto.setUsername(like.getUser().getUsername());
+        dto.setTweetId(like.getTweet().getId());
+        dto.setCreatedAt(like.getCreatedAt());
         return dto;
     }
 }
