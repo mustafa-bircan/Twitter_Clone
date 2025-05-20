@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "followers")
+@Table(
+        name = "followers",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"follower_id", "following_id"})
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

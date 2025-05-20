@@ -58,4 +58,15 @@ public class DtoUtils {
         dto.setCreatedAt(notification.getCreatedAt());
         return dto;
     }
+
+    public FollowerResponseDto convertFollowerToDto(Follower follower) {
+        FollowerResponseDto dto = new FollowerResponseDto();
+        dto.setId(follower.getId());
+        dto.setFollowerId(follower.getFollower().getId());
+        dto.setFollowerUsername(follower.getFollower().getUsername());
+        dto.setFollowingId(follower.getFollowing().getId());
+        dto.setFollowingUsername(follower.getFollowing().getUsername());
+        dto.setCreatedAt(follower.getCreatedAt());
+        return dto;
+    }
 }
