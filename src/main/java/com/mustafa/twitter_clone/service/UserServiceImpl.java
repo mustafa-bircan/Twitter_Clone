@@ -1,7 +1,9 @@
 package com.mustafa.twitter_clone.service;
 
 import com.mustafa.twitter_clone.dto.UserResponseDto;
+import com.mustafa.twitter_clone.entity.Role;
 import com.mustafa.twitter_clone.entity.User;
+import com.mustafa.twitter_clone.repository.RoleRepository;
 import com.mustafa.twitter_clone.repository.UserRepository;
 import com.mustafa.twitter_clone.utils.DtoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    @Autowired
+    private RoleRepository roleRepository;
+
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -29,8 +35,12 @@ public class UserServiceImpl implements UserService {
         user.setPassword(dto.getPassword());
         user.setCreatedAt(LocalDateTime.now());
 
-        User saved = userRepository.save(user);
+        Role defaultRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Default role not found!"));
 
+        user.getRoles().add(defaultRole);
+
+        User saved = userRepository.save(user);
         return DtoUtils.convertUserToDto(saved);
     }
 
